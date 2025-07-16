@@ -1,0 +1,64 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import classification_report, confusion_matrix, ConfusionMatrixDisplay
+
+csv_path = r"C:\Users\Dell\Downloads\IRIS.csv"
+df = pd.read_csv(csv_path)
+
+print("\nFirst 10 rows of the dataset:")
+print(df.head(10))
+
+df = df.rename(columns={
+    "sepal length (cm)": "sepal_length",
+    "sepal width (cm)": "sepal_width",
+    "petal length (cm)": "petal_length",
+    "petal width (cm)": "petal_width",
+    "species": "species"
+})
+
+X = df.drop(columns=["species"])
+y = df["species"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
+
+pipeline = make_pipeline(
+    StandardScaler(),
+    LogisticRegression(max_iter=200, multi_class="multinomial")
+)
+
+pipeline.fit(X_train, y_train)
+
+y_pred = pipeline.predict(X_test)
+
+print("\nClassification Report on Test Set:\n")
+print(classification_report(y_test, y_pred))
+
+cm = confusion_matrix(y_test, y_pred, labels=pipeline.classes_)
+disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=pipeline.classes_)
+
+fig, ax = plt.subplots()
+disp.plot(ax=ax)
+plt.title("Confusion Matrix – Logistic Regression")
+plt.tight_layout()
+
+fig2, ax2 = plt.subplots()
+for species_name, subset in df.groupby("species"):
+    ax2.scatter(
+        subset["petal_length"],
+        subset["petal_width"],
+        label=species_name,
+        alpha=0.7
+    )
+ax2.set_xlabel("Petal length")
+ax2.set_ylabel("Petal width")
+ax2.set_title("Iris Petal Measurements")
+ax2.legend()
+plt.tight_layout()
+
+plt.show()
