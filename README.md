@@ -23,11 +23,29 @@ This project uses machine learning to predict movie ratings based on various fea
 
 ---
 
-🗂️ Project Structure
+🌸 Iris Flower Classification Model
 
-```bash
-CODSOFT/
-├── Movie-Rating-Prediction/
-│   ├── movierating.py         # Main model training and prediction script
-│   ├── dataset.csv            # Movie dataset
-│   └── README.md              # This file
+This project uses machine learning to classify iris flowers into three species — Setosa, Versicolor, and Virginica — based on petal and sepal measurements. It is part of the **CODSOFT Internship** project series.
+
+📌 Features
+
+- Reads and uses the classic Iris dataset (CSV format)
+- Separates features and labels for classification
+- Splits data into training and testing sets
+- Scales feature values using standardization
+- Trains a **Logistic Regression** classifier
+- Evaluates model performance using a classification report
+- Visualizes:
+  - Confusion matrix
+  - Scatter plot of petal length vs petal width by species
+
+---
+
+🧠 Technologies Used
+
+- Python 3
+- Pandas
+- Matplotlib
+- Scikit-learn
+
+---
